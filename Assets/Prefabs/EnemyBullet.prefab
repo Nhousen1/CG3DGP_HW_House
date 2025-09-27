@@ -18,6 +18,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4855751554643993674, guid: a233f8e617a0b4ed282da6c85b86d110,
+        type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5562080116619924520, guid: a233f8e617a0b4ed282da6c85b86d110,
         type: 3}
       propertyPath: m_LocalPosition.x
