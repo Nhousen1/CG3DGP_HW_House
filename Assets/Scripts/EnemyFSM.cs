@@ -22,8 +22,20 @@ public class EnemyFSM : MonoBehaviour
 
     private void Awake()
     {
-        baseTransform = GameObject.Find("PlayerBase").transform;
         agent = GetComponentInParent<NavMeshAgent>();
+        // To help with smoother movement and making sure enemies dont get stuck
+        agent.avoidancePriority = Random.Range(20, 80);
+        agent.autoBraking = false;
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+
+        // Snap enemy to nearest NavMesh point on spawn
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 2f, NavMesh.AllAreas))
+        {
+            agent.Warp(hit.position);
+        }
+
+        baseTransform = GameObject.Find("PlayerBase").transform;
     }
     private void OnDrawGizmosSelected()
     {
@@ -58,7 +70,14 @@ public class EnemyFSM : MonoBehaviour
     void GoToBase()
     {
         agent.isStopped = false;
-        agent.SetDestination(baseTransform.position);
+        Vector3 offset = Random.insideUnitSphere * 2f;
+        offset.y = 0;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(baseTransform.position, out hit, 10f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(baseTransform.position + offset);
+        }
+        
 
         if (sightSensor.detectedObject != null)
         {
